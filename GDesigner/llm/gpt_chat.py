@@ -26,22 +26,51 @@ async def achat(
     request_url = MINE_BASE_URL
     authorization_key = MINE_API_KEYS
     headers = {
-        'Content-Type': 'application/json',
-        'authorization': authorization_key
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {authorization_key}",
     }
+
     data = {
-        "name": model,
-        "inputs": {
-            "stream": False,
-            "msg": repr(msg),
-        }
+        "model": model,
+        "messages": msg,
+        "thinking": {"type": "enabled"},
+        "reasoning_effort": "high",
+        "stream": False,
     }
     async with aiohttp.ClientSession() as session:
-        async with session.post(request_url, headers=headers ,json=data) as response:
-            response_data = await response.json()
-            prompt = "".join([item['content'] for item in msg])
-            cost_count(prompt,response_data['data'],model)
-            return response_data['data']
+        async with session.post(
+            request_url,
+            headers=headers,
+            json=data,
+            timeout=aiohttp.ClientTimeout(total=120),
+        ) as response:
+            text = await response.text()
+
+            if response.status != 200:
+                print("DeepSeek API Error")
+                print("Status:", response.status)
+                print("Content-Type:", response.headers.get("Content-Type"))
+                print("Response:", text[:1000])
+                raise RuntimeError(f"DeepSeek API failed with status {response.status}")
+
+            try:
+                response_data = await response.json()
+            except Exception:
+                print("Response is not JSON")
+                print("Status:", response.status)
+                print("Content-Type:", response.headers.get("Content-Type"))
+                print("Response:", text[:1000])
+                raise
+
+            content = response_data["choices"][0]["message"]["content"]
+
+            # DeepSeek 模型名不是 tiktoken 默认支持的 OpenAI 模型名，
+            # 这里先不要调用 cost_count，否则可能因为 encoding_for_model 报错。
+            # prompt = "".join([item["content"] for item in msg])
+            # cost_count(prompt, content, model)
+
+            return content
+        
 
 @LLMRegistry.register('GPTChat')
 class GPTChat(LLM):
