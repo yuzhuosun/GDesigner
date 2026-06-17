@@ -15,28 +15,49 @@ OPENAI_API_KEYS = ['']
 BASE_URL = ''
 
 load_dotenv()
-MINE_BASE_URL = os.getenv('BASE_URL')
-MINE_API_KEYS = os.getenv('API_KEY')
+MINE_BASE_URL = os.getenv("BASE_URL", "https://llmapi.paratera.com/v1/").rstrip("/")
+MINE_API_KEY = os.getenv("API_KEY")
+MINE_MODEL = os.getenv("DEEPSEEK_MODEL", "DeepSeek-R1")
 
+
+def _chat_completions_url(base_url: str) -> str:
+    base_url = base_url.rstrip("/")
+    if base_url.endswith("/chat/completions"):
+        return base_url
+    return f"{base_url}/chat/completions"
+
+def _normalize_messages(messages):
+    if isinstance(messages, str):
+        return [{"role": "user", "content": messages}]
+
+    normalized = []
+    for m in messages:
+        if isinstance(m, dict):
+            role = m.get("role", "user")
+            content = m.get("content", "")
+        else:
+            role = getattr(m, "role", "user")
+            content = getattr(m, "content", str(m))
+        normalized.append({"role": role, "content": content})
+    return normalized
 
 @retry(wait=wait_random_exponential(max=100), stop=stop_after_attempt(3))
 async def achat(
     model: str,
     msg: List[Dict],):
-    request_url = MINE_BASE_URL
-    authorization_key = MINE_API_KEYS
+    request_url = _chat_completions_url(MINE_BASE_URL)
+    authorization_key = MINE_API_KEY
     headers = {
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {authorization_key}",
+        "Authorization": f"Bearer {MINE_API_KEY}",
     }
 
     data = {
-        "model": model,
-        "messages": msg,
-        "thinking": {"type": "enabled"},
-        "reasoning_effort": "high",
+        "model": model or MINE_MODEL,
+        "messages": _normalize_messages(msg),
         "stream": False,
     }
+
     async with aiohttp.ClientSession() as session:
         async with session.post(
             request_url,
