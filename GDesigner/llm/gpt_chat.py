@@ -1,3 +1,7 @@
+# 【中文备注｜LLM 调用与 token/cost 统计位置】
+# 本文件封装 OpenAI 兼容接口调用，并通常负责把 prompt/completion token 和费用写入全局统计对象。
+# 后续若论文需要精确比较通信成本，应确认每次 agent 调用都能记录 prompt_tokens、completion_tokens、cost、latency。
+# 当前备注只解释未来修改点，不改变任何运行逻辑。
 import aiohttp
 from typing import List, Union, Optional
 from tenacity import retry, wait_random_exponential, stop_after_attempt

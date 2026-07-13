@@ -1,3 +1,9 @@
+# 【中文备注｜MMLU 数据读取与答案后处理】
+# MMLUDataset 会从 datasets/MMLU/data/{split}/ 读取所有 CSV，合并、固定随机打乱，
+# record_to_input 把 question 和 A/B/C/D 选项拼成 Graph 需要的 {"task": ...}，
+# postprocess_answer 从 LLM 输出中抽取 A/B/C/D，record_to_target_answer 返回标准答案。
+# 后续若做能力先验，可在这里保留 subject/topic 信息，统计 agent 在不同学科上的历史正确率。
+# 当前备注只解释未来修改点，不改变任何运行逻辑。
 import glob
 import pandas as pd
 from typing import Union, List, Literal, Any, Dict

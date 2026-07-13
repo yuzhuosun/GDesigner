@@ -1,3 +1,8 @@
+# 【中文备注｜最终答案汇总节点】
+# FinalRefer/FinalMajorVote/FinalDirect 决定如何把多个 agent 输出变成最终答案。
+# 做论文实验时需要同时比较不同 decision_method，避免提升其实来自更强的最终聚合器，而不是边策略。
+# 后续可在这里记录最终聚合时参考了哪些 agent 输出，作为 result 日志和可解释性分析。
+# 当前备注只解释未来修改点，不改变任何运行逻辑。
 from typing import List,Any,Dict
 
 from GDesigner.graph.node import Node

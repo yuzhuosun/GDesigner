@@ -1,3 +1,9 @@
+# 【中文备注｜MMLU 边策略训练流程】
+# 当前训练逻辑对每个样本复制 graph，共享 gcn/mlp 参数，调用 arun 得到答案和边采样 log_prob，
+# 再用最终正确性 utility 计算 -log_prob * utility 的 REINFORCE 风格损失。
+# 后续做 GRPO 时，应在这里把同一道题采样 K 个通信图，计算 group-relative advantage，
+# 并把 reward 设计为 accuracy - token_penalty - edge_density_penalty。
+# 当前备注只解释未来修改点，不改变任何运行逻辑。
 import torch
 from typing import Iterator
 import pandas as pd

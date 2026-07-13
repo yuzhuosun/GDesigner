@@ -1,3 +1,8 @@
+# 【中文备注｜GSM8K 数学 agent 的角色提示位置】
+# MathSolver 负责 GSM8K 等数学任务。当前逻辑会根据 role 生成 constraint，并在部分角色下把其他 agent 答案作为 hint。
+# 后续若要证明方法不依赖强角色，应在这里增加 weak-role/no-role 设置，避免 Math Solver 特殊提示带来不公平增益。
+# 若要做 Edge-Rule，还可在读取 spatial_info 时只接收被边策略选中的高质量输出。
+# 当前备注只解释未来修改点，不改变任何运行逻辑。
 from typing import List,Any,Dict
 
 from GDesigner.graph.node import Node

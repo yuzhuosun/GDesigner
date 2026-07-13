@@ -1,3 +1,8 @@
+# 【中文备注｜MMLU 评估与日志输出位置】
+# evaluate 会按 batch 遍历 dataset，把每条样本转成 input_dict，异步运行 graph.arun，
+# 然后 postprocess_answer、对比 correct_answer、累积 Accuracy，并打印 Cost/PromptTokens/CompletionTokens。
+# 后续若要写论文结果，需要在这里把每题 raw_answer、processed_answer、correct、edge_count、token、cost、latency 写入 result/jsonl。
+# 当前备注只解释未来修改点，不改变任何运行逻辑。
 import os
 import json
 import math
