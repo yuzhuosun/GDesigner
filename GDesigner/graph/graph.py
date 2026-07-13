@@ -1,3 +1,11 @@
+# 【中文备注｜Edge-Rule GRPO 后续改造入口】
+# 本文件是多智能体图执行的核心：负责初始化 agent 节点、构造候选边、根据边概率采样 spatial/temporal 通信边、按拓扑顺序执行节点，最后调用 decision node 汇总答案。
+# 若要实现 Edge-Rule GRPO，主要会在这里新增：
+# 1) agent_capability：每个 agent 的历史能力先验，例如按题型/学科统计正确率；
+# 2) semantic_edge_score：根据当前问题、source 输出、target 状态计算边级语义通信分数；
+# 3) edge_policy 分支：保留原 GDesigner 的 GCN 边策略，同时增加 edge_rule、edge_rule_grpo；
+# 4) meta 日志：返回实际边数、边密度、edge log_prob、token/cost 等，供训练和评估写入 result。
+# 当前备注只解释未来修改点，不改变任何运行逻辑。
 import shortuuid
 from typing import Any, List, Optional, Dict, Tuple
 from abc import ABC

@@ -1,3 +1,9 @@
+# 【中文备注｜节点输入输出与通信信息】
+# Node 是所有 agent 的基类。每个节点会从 spatial_predecessors 读取同一轮其他 agent 的输出，
+# 从 temporal_predecessors 读取上一轮记忆，然后在 execute/async_execute 中调用具体 agent 的 prompt 逻辑。
+# 后续做 Edge-Rule GRPO 时，若要记录“哪条边传来了什么语义信息”或“source 输出质量”，
+# 可在 get_spatial_info/get_temporal_info 返回值中增加 score、capability、edge_type 等字段。
+# 当前备注只解释未来修改点，不改变任何运行逻辑。
 import shortuuid
 from typing import List, Any, Optional,Dict
 from abc import ABC, abstractmethod

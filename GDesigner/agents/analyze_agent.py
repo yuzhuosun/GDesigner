@@ -1,3 +1,9 @@
+# 【中文备注｜MMLU/通用分析 agent 的角色提示位置】
+# AnalyzeAgent 会根据 self.role 获取不同 system constraint，并把前驱 agent 的输出拼接进 user prompt。
+# 如果要取消强角色 agent，可在这里支持 weak-role/no-role：例如所有 agent 使用统一 Normal 角色，
+# 或者不在 system prompt 中暴露专家身份，只保留通用解题指令。
+# 如果要做语义通信压缩，也可以在拼接 spatial_info 前，对前驱输出做摘要、过滤或打分。
+# 当前备注只解释未来修改点，不改变任何运行逻辑。
 from typing import List,Any,Dict
 import re
 

@@ -1,3 +1,8 @@
+# 【中文备注｜GSM8K 数据处理与数字答案抽取】
+# gsm_data_process 把原始 jsonl 的 question/answer 拆成 task、推理 step 和最终 answer。
+# gsm_get_predict 会从模型输出中提取数字答案，用于和标准答案比较。
+# 后续若要做 capability prior，可把每个 agent 在数学题上的历史解题正确率更新到 Graph.agent_capability。
+# 当前备注只解释未来修改点，不改变任何运行逻辑。
 import re
 
 def gsm_data_process(dataset):

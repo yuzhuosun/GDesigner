@@ -1,3 +1,9 @@
+# 【中文备注｜GSM8K 实验主入口与 result 写入】
+# 本文件读取 jsonl 格式 GSM8K，调用 gsm_data_process 转成 task/step/answer，
+# 每个 batch 运行 Graph.arun，使用 gsm_get_predict 抽取数字答案，随后把每题结果写入 result/gsm8k/*.json。
+# 后续实现 Edge-Rule GRPO 时，需要像 MMLU 一样增加 edge_policy/prior_mode/seed/group_size 等参数，
+# 并在 updated_item 中额外写入边数、边矩阵、token 成本、reward、advantage 等字段。
+# 当前备注只解释未来修改点，不改变任何运行逻辑。
 import sys
 import os
 import argparse

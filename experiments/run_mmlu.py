@@ -1,3 +1,9 @@
+# 【中文备注｜MMLU 实验主入口】
+# 本文件负责解析命令行参数、根据 mode 生成固定拓扑 mask、构造 Graph、下载/读取 MMLU 数据，
+# 如果开启 optimized_spatial/optimized_temporal 就先训练，再调用 evaluate 输出分数。
+# 后续实现 Edge-Rule GRPO 时，建议在这里新增参数：edge_policy、prior_mode、group_size、lambda_token、lambda_edge、seed、log_path。
+# 同时需要把这些参数传给 Graph 和训练/评估函数，以便 result 文件记录完整实验配置。
+# 当前备注只解释未来修改点，不改变任何运行逻辑。
 import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 sys.stdout.reconfigure(encoding='utf-8')
