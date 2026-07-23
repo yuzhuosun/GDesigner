@@ -93,6 +93,8 @@ async def achat(
             # 这里先不要调用 cost_count，否则可能因为 encoding_for_model 报错。
             prompt = "".join([item["content"] for item in msg])
             cost_count(prompt, content, model)
+            print(f"DeepSeek API Success: {len(prompt)} prompt tokens, {len(content)} completion tokens")
+        
 
             return content
         
