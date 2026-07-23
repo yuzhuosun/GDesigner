@@ -21,7 +21,7 @@ BASE_URL = ''
 load_dotenv()
 MINE_BASE_URL = os.getenv("BASE_URL", "https://llmapi.paratera.com/v1/").rstrip("/")
 MINE_API_KEY = os.getenv("API_KEY")
-MINE_MODEL = os.getenv("DEEPSEEK_MODEL", "DeepSeek-R1")
+MINE_MODEL = os.getenv("DEEPSEEK_MODEL", "DeepSeek-V3.1")
 
 
 def _chat_completions_url(base_url: str) -> str:
@@ -91,8 +91,8 @@ async def achat(
 
             # DeepSeek 模型名不是 tiktoken 默认支持的 OpenAI 模型名，
             # 这里先不要调用 cost_count，否则可能因为 encoding_for_model 报错。
-            # prompt = "".join([item["content"] for item in msg])
-            # cost_count(prompt, content, model)
+            prompt = "".join([item["content"] for item in msg])
+            cost_count(prompt, content, model)
 
             return content
         
